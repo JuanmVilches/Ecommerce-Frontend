@@ -1,0 +1,42 @@
+.carousel{
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider {
+    position: relative;
+    width: 300vw;
+    display: flex;
+    height: 70vh;
+    animation: slide 15s infinite;
+
+    .slide{
+        width: 100vw;
+        height: 70vh;
+        /* object-fit: cover; */
+    }
+}
+
+@keyframes slide {
+    0% {
+        left: 0;
+    }
+    25%{
+        left:0;
+    }
+    30%{
+        left: -100vw;
+    }
+    60%{
+        left: -100vw;
+    }
+    65%{
+        left: -200vw;
+    }
+    95%{
+        left: -200vw;
+    }
+    100%{
+        left: 0;
+    }
+}

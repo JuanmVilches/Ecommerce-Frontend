@@ -1,0 +1,89 @@
+.about-h1{
+    text-align: center;
+    margin-top: 32px;
+}
+
+.about-h2 {
+    text-transform: uppercase;
+}
+
+.about-main {
+    display: flex;
+    background: linear-gradient(180deg, rgba(46, 72, 123, 1) 0%, rgba(92, 146, 181, 1) 50%, rgba(147, 218, 178, 1) 100%);
+    flex-wrap: wrap;
+}
+
+.main-site {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    margin: 0 auto;
+    width: 1200px;
+}
+
+.somos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 3px solid black;
+}
+
+.destacamos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 3px solid black;
+
+}
+
+.mision {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 3px solid black;
+
+}
+
+.equipo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 3px solid black;
+
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 16px;
+    
+    img{
+        width: 250px;
+    }
+}
+
+@media screen and (width < 900px) {
+    .somos {
+        margin: 0 16px;
+    }
+
+    .destacamos {
+        margin: 0 16px;
+    }
+
+    .mision {
+        margin: 0 16px;
+    }
+
+    .equipo {
+        margin: 0 16px;
+    }
+}
+

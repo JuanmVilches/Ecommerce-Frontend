@@ -1,0 +1,94 @@
+.main-products {
+    text-align: center;
+    max-width: 1400px;
+    margin: 32px auto;
+
+    h2 {
+        margin: 16px 0;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+    }
+
+    .card {
+        transition: box-shadow .2s;
+        text-align: center;
+        width: 300px;
+
+        &:hover {
+            box-shadow: 0 2px 4px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            position: relative;
+
+            .card-image {
+                width: 250px;
+                height: 260px;
+                padding: 32px 32px 0px 32px;
+                margin-bottom: 16px;
+                transition: transform .2s;
+
+                &.iPhonese {
+                    width: 235px;
+                }
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .card-body {
+
+            .card-title {
+                margin: 0;
+            }
+
+            .card-storage {
+                margin: 8px 0;
+
+                button {
+                    padding: 5px 5px;
+                    border: solid 1px black;
+                    border-radius: 4px;
+                    background-color: white;
+                    cursor: pointer;
+                    margin-right: 8px;
+                    transition: background-color .2s;
+
+                    &:hover {
+                        background-color: #f1f1f1;
+                    }
+                }
+            }
+
+            .card-price {
+                margin: 8px 0;
+            }
+
+            .card-buy {
+                padding-bottom: 16px;
+
+                button {
+                    padding: 8px 16px;
+                    width: 80%;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: #4c83ac;
+                    color: white;
+                    cursor: pointer;
+                    transition: background-color .2s;
+
+                    &:hover {
+                        background-color: #7ca2c0;
+                    }
+                }
+            }
+        }
+    }
+}

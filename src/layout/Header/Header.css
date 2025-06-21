@@ -1,0 +1,131 @@
+.header-container {
+    height: 75px;
+    z-index: 1;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #dddddd;
+}
+
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.burger-check {
+    display: none;
+}
+
+.burger-check:checked+.header-left .main-nav {
+    left: 0;
+}
+
+.header-left {
+    display: flex;
+    flex-wrap: wrap;
+
+    .logo {
+        width: 70px;
+        height: 100%;
+    }
+
+    .main-nav-list {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-left: 8px;
+        height: 100%;
+
+        a {
+            padding: 6px;
+            text-decoration: none;
+            color: black;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            transition: color .2s;
+
+            &:hover {
+                color: #4b80aa;
+            }
+
+        }
+
+        .nav-item {
+            list-style: none;
+        }
+    }
+}
+
+.header-right {
+
+    display: flex;
+    align-items: center;
+
+    .user-logo {
+        width: 60px;
+    }
+
+    .cart-icon {
+        font-size: 24px;
+        position: relative;
+        margin-right: 10px;
+    }
+
+    .cart-icon::after {
+        content: "1";
+        position: absolute;
+        right: -8px;
+        top: -8px;
+        display: block;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #4c83ac;
+        color: white;
+        font-size: 12px;
+        border-radius: 50%;
+    }
+}
+
+@media (width < 900px) {
+
+    .header-container {
+
+        .burger {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header-left {
+
+            .main-nav {
+                position: absolute;
+                height: calc(100dvh - 75px);
+                background-color: white;
+                top: 75px;
+                width: 300px;
+                left: -300px;
+                transition: left .3s;
+
+                .main-nav-list {
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 32px;
+                }
+
+            }
+        }
+
+        .header-right {
+            .user-logo {
+                display: none;
+            }
+        }
+    }
+}
