@@ -24,7 +24,7 @@
 
 .header-left {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 
     .logo {
         width: 70px;

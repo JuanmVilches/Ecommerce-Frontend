@@ -1,4 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Footer.css';
+import { faFacebook, faInstagram, faXTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 export default function Footer() {
   return (
@@ -7,7 +9,7 @@ export default function Footer() {
         <div className="social-networks">
           <div className="facebook">
             <a href="https://www.facebook.com/" target="_blank">
-              <i className="fa-brands fa-facebook" />
+              <FontAwesomeIcon icon={faFacebook} />
             </a>
             <a href="https://www.facebook.com/" target="_blank" className="ocultar">
               Facebook
@@ -15,7 +17,7 @@ export default function Footer() {
           </div>
           <div className="instagram">
             <a href="https://www.instagram.com/" target="_blank">
-              <i className="fa-brands fa-instagram" />
+              <FontAwesomeIcon icon={faInstagram} />
             </a>
             <a href="https://www.instagram.com/" target="_blank" className="ocultar">
               Instagram
@@ -23,7 +25,7 @@ export default function Footer() {
           </div>
           <div className="twitter">
             <a href="https://x.com/" target="_blank">
-              <i className="fa-brands fa-x-twitter" />
+              <FontAwesomeIcon icon={faXTwitter} />
             </a>
             <a href="https://x.com/" target="_blank" className="ocultar">
               Twitter
@@ -31,7 +33,7 @@ export default function Footer() {
           </div>
           <div className="youtube">
             <a href="https://www.youtube.com/" target="_blank">
-              <i className="fa-brands fa-youtube" />
+              <FontAwesomeIcon icon={faYoutube} />
             </a>
             <a href="https://www.youtube.com/" target="_blank" className="ocultar">
               Youtube
@@ -39,7 +41,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="copyright">
-          <img className="copyright-logo" src="/assets/images/logo empresa/logo.png" alt="" />
+          <img className="copyright-logo" src="/src/assets/images/logo empresa/logo.png" alt="" />
           <p>Copyright © 2025 SmartZone Store</p>
         </div>
         <div className="customer-services">

@@ -1,218 +1,225 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './AdminProducts.css';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { set, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+const API = 'https://6861308b8e74864084452e8a.mockapi.io';
 
 export default function AdminProducts() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({ mode: 'onChange' });
+
+  const [products, setProducts] = useState([]);
+  const [editProduct, setEditProduct] = useState(null);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  async function getProducts() {
+    try {
+      const response = await axios.get(`${API}/products`);
+      setProducts(response.data);
+    } catch (error) {
+      console.log('Error al obtener los productos', error);
+    }
+  }
+
+  function editingProduct(id) {
+    const productToEdit = products.find((product) => product.id === id);
+    console.log('Producto a editar:', productToEdit);
+    if (productToEdit) {
+      setEditProduct(productToEdit);
+      reset(productToEdit);
+    }
+  }
+
+  function deleteProduct(id) {
+    Swal.fire({
+      title: '¿Desea eliminar este producto?',
+      text: 'Esta acción no podrá deshacerse.',
+      icon: 'error',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Borrar',
+      confirmButtonColor: 'red',
+      cancelButtonColor: 'royalblue',
+      cancelButtonText: 'Cancelar',
+    }).then((response) => {
+      if (response.isConfirmed) {
+        axios.delete(`${API}/products/${id}`).then(() => {
+          Swal.fire({
+            title: 'Producto eliminado correctamente',
+            icon: 'success',
+            showConfirmButton: true,
+          });
+          getProducts();
+        });
+      }
+    });
+  }
+
+  async function adminSubmit(data) {
+    try {
+      if (editProduct) {
+        await axios.put(`${API}/products/${editProduct.id}`, data);
+      } else {
+        const response = await axios.post(`${API}/products`, data);
+        setProducts((prevProducts) => [...prevProducts, response.data]);
+      }
+      getProducts();
+      setEditProduct(null);
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
-      <h1 className="admin-products-h1">Administrador de Productos</h1>
-      <div className="table-container">
-        <table className="admin-table" border={1}>
-          <thead>
-            <tr>
-              <th>Imagen del producto</th>
-              <th className="product">Producto</th>
-              <th>Descripción</th>
-              <th>Fecha de ingreso</th>
-              <th className="price">Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <img src="/src/assets/images/Samsung galaxy S24.PNG" alt="" />
-              </td>
-              <td>
-                <p>Samsung Galaxy S24</p>
-              </td>
-              <td>
-                El Samsung Galaxy S24 es un smartphone de gama alta que forma parte de la serie
-                Galaxy S de Samsung, conocida por su diseño premium, rendimiento potente y
-                características innovadoras.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.000.000</td>
-              <td>
-                <button title="Editar producto">
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/Samsung Galaxy S24 FE.png" alt="" />
-              </td>
-              <td>
-                <p>Samsung Galaxy S24 FE</p>
-              </td>
-              <td>
-                El Samsung Galaxy S24 FE (Fan Edition) es una versión más asequible de la serie
-                Galaxy S24, diseñada para ofrecer muchas de las características premium de los
-                modelos flagship a un precio más accesible.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 900.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/iPhone 16.png" alt="" />
-              </td>
-              <td>
-                <p>iPhone 16</p>
-              </td>
-              <td>
-                El iPhone 16 representa la última generación de smartphones de Apple, tiene pantalla
-                de 6,1", chip A18, cámara principal de 48 MP y nuevas funciones de inteligencia
-                artificial. Incluye un botón de acción y mejora la batería.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.200.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/iPhone 16 plus.png" alt="" />
-              </td>
-              <td>
-                <p>iPhone 16 Plus</p>
-              </td>
-              <td>
-                El iPhone 16 Plus es la versión de pantalla grande del iPhone 16, cuenta con
-                pantalla de 6.7 pulgadas, chip A18 Bionic, cámara de 48 MP, gran duración de batería
-                y carga rápida. Con iOS 18 y soporte 5G, es ideal para quienes buscan rendimiento y
-                pantalla grande en un diseño elegante.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.400.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/iPhone 16 Pro.png" alt="" />
-              </td>
-              <td>
-                <p>iPhone 16 Pro</p>
-              </td>
-              <td>
-                El iPhone 16 Pro cuenta con una pantalla Super Retina XDR OLED de 6,3 pulgadas con
-                tecnología ProMotion de hasta 120 Hz, chip A18 Pro, cámara principal de 48 MP con
-                zoom periscópico 5x y diseño de titanio.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.650.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/iPhone SE.png" alt="" />
-              </td>
-              <td>
-                <p>iPhone SE</p>
-              </td>
-              <td>
-                El iPhone SE es un iPhone compacto y asequible que combina el clásico diseño con
-                táctil ID y hardware moderno, como el chip A15 Bionic. Con una pantalla de 4.7
-                pulgadas, cámara de 12 MP y soporte para 5G, ofrece rendimiento sólido y
-                actualizaciones de iOS a largo plazo. Ideal para quienes buscan un iPhone pequeño y
-                económico.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 800.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/Google_Pixel_9-removebg-preview.png" alt="" />
-              </td>
-              <td>
-                <p>Google Pixel 9</p>
-              </td>
-              <td>
-                El Google Pixel 9 cuenta con una pantalla OLED de 6,24" y tasa de refresco de 120
-                Hz. Está impulsado por el chip Google Tensor G4, con 12 GB de RAM y opciones de
-                almacenamiento de 128 GB o 256 GB. Su sistema de cámaras incluye un sensor principal
-                de 50 MP y un ultra gran angular de 48 MP, junto con una cámara frontal de 10,5 MP.
-                Además, utiliza inteligencia artificial Gemini AI para mejorar la experiencia.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.300.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/assets/images/Google Pixel 8 Pro.png" alt="" />
-              </td>
-              <td>
-                <p>Google Pixel 8 Pro</p>
-              </td>
-              <td>
-                El Google Pixel 8 Pro tiene una pantalla OLED LTPO de 6,7" con tasa de refresco de
-                120 Hz. Equipado con el chip Google Tensor G3 y 12 GB de RAM. Su sistema de cámaras
-                incluye un sensor principal de 50 MP y un teleobjetivo de 48 MP con zoom 5x. La
-                batería de 5.050 mAh admite carga rápida de 45 W y carga inalámbrica de 23 W.
-                También incluye un termómetro integrado.
-              </td>
-              <td>01/02/2025</td>
-              <td>$ 1.350.000</td>
-              <td>
-                <button title="Editar producto">
-                  <i className="fa-solid fa-pen" />
-                </button>
-                <button className="danger" title="Eliminar producto">
-                  <i className="fa-solid fa-trash-can" />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="padre">
+        <h1 className="admin-products-h1">Administrador de Productos</h1>
+        <div className="table-container">
+          <table className="admin-table" border={1}>
+            <thead>
+              <tr>
+                <th>Imagen del producto</th>
+                <th className="product">Producto</th>
+                <th>Descripción</th>
+                <th>Fecha de ingreso</th>
+                <th className="price">Precio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>
+                    <img src={product.image} alt="" />
+                  </td>
+                  <td>
+                    <p>{product.title}</p>
+                  </td>
+                  <td>{product.description}</td>
+                  <td>{product.date}</td>
+                  <td>{product.price}</td>
+                  <td>
+                    <button title="Editar producto" onClick={() => editingProduct(product.id)}>
+                      <FontAwesomeIcon icon={faPen} />
+                    </button>
+                    <button
+                      className="danger"
+                      title="Eliminar producto"
+                      onClick={() => deleteProduct(product.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <form className="admin-form" onSubmit={handleSubmit(adminSubmit)}>
+        <div className="input-group">
+          <label htmlFor="title">Producto</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="Nombre del producto"
+            {...register('title', {
+              required: 'Ingrese el nombre del producto',
+              minLength: {
+                value: 5,
+                message: 'El nombre del producto debe tener al menos 5 caracteres',
+              },
+              maxLength: {
+                value: 50,
+                message: 'El nombre del producto no puede exceder los 50 caracteres',
+              },
+            })}
+          />
+          {errors?.product && <span className="error">{errors.product.message}</span>}
+        </div>
+        <div className="input-group">
+          <label htmlFor="price">Precio</label>
+          <input
+            type="text"
+            id="price"
+            step={0.01}
+            placeholder="Precio del producto"
+            {...register('price', {
+              required: 'Ingrese el precio del producto',
+              min: {
+                value: 1,
+                message: 'El precio no puede ser menor a 1',
+              },
+            })}
+          />
+          {errors?.price && <span className="error">{errors.price.message}</span>}
+        </div>
+        <div className="input-group">
+          <label htmlFor="image">Imagen</label>
+          <input
+            type="text"
+            id="image"
+            placeholder="URL de la imagen del producto"
+            {...register('image', {
+              required: 'Ingrese una imagen del producto',
+            })}
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="description">Descripción</label>
+          <textarea
+            type="text"
+            id="description"
+            placeholder="Descripción del producto"
+            {...register('description', {
+              required: 'Ingrese una descripción del producto',
+              minLength: {
+                value: 10,
+                message: 'La descripción debe tener al menos 10 caracteres',
+              },
+              maxLength: {
+                value: 500,
+                message: 'La descripción no puede exceder los 200 caracteres',
+              },
+            })}
+          />
+          {errors?.description && <span className="error">{errors.description.message}</span>}
+        </div>
+        <div className="input-group">
+          <label htmlFor="date">Fecha de creación</label>
+          <input
+            type="date"
+            id="date"
+            {...register('date', { required: 'Ingrese la fecha de creación' })}
+          />
+          {errors?.date && <span className="error">{errors.date.message}</span>}
+        </div>
+        <div className="input-group">
+          <label htmlFor="category">Categoría</label>
+          <select id="category" {...register('category', { required: 'Seleccione una categoría' })}>
+            <option value="" disabled>
+              Seleccione una categoría
+            </option>
+            <option value="smartphone">Smartphone</option>
+            <option value="accesory">Accesorio</option>
+          </select>
+          {errors?.category && <span className="error">{errors.category.message}</span>}
+        </div>
+        <button type="submit" className="admin-btn" disabled={!isValid}>
+          {editProduct ? 'Editar producto' : 'Cargar producto'}
+        </button>
+      </form>
     </>
   );
 }

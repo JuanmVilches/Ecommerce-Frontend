@@ -4,17 +4,17 @@
     display: flex;
     justify-content: space-around;
 
-    a {
-        text-decoration: none;
-        color: white;
-    }
-
-    .social-networks {
+     .social-networks {
         display: flex;
         flex-direction: column;
         gap: 16px;
         margin-top: 16px;
         margin-bottom: 16px;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
     }
 
     .copyright {

@@ -1,0 +1,36 @@
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #4c83ac;
+    padding: 32px;
+    align-items: center;
+
+    .delivery,
+    .shop,
+    .contact {
+        text-align: center;
+        flex-basis: 0;
+    }
+
+    p {
+        margin-top: 16px;
+        color: white;
+        font-weight: 700;
+        font-size: 21px;
+    }
+
+    .fontawesome-icons {
+        font-size: 150px;
+        color: white;
+    }
+}
+
+@media (width < 900px) {
+.features {
+        flex-direction: column;
+        gap: 40px;
+        border-bottom: 1px solid black;
+        border-top: solid 1px black;
+    }
+}
