@@ -9,6 +9,9 @@ import About from './pages/About/About';
 import AdminProducts from './pages/AdminProducts/AdminProducts';
 import ProductsDetail from './pages/ProductsDetail/ProductsDetail';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
+import Login from './pages/Login/Login';
+import AdminGuard from './guard/AdminGuard';
+import UserGuard from './guard/UserGuard';
 
 export default function App() {
   return (
@@ -20,8 +23,10 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/adminproducts" element={<AdminProducts />} />
-        <Route path="/adminusers" element={<AdminUsers />} />
+        <Route path="/adminproducts" element={
+          <AdminGuard><AdminProducts /></AdminGuard>}/>
+        <Route path="/adminusers" element={<UserGuard> <AdminUsers /></UserGuard>} />
+        <Route path='/login' element={<Login/>} />
       </Routes>
       <Footer />
     </>

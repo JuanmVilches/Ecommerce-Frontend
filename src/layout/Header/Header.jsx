@@ -2,8 +2,11 @@ import { NavLink } from 'react-router-dom';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const user = JSON.parse(localStorage.getItem(`user`));
+
   return (
     <>
       <header className="header-container">
@@ -46,6 +49,13 @@ export default function Header() {
           </nav>
         </div>
         <div className="header-right">
+          {user ? (
+            <a href="">Logout</a>
+          ) : (
+            <li className="nav-item">
+              <NavLink to="/login">Iniciar sesión</NavLink>
+            </li>
+          )}
           <img className="user-logo" src="/src/assets/images/user logo.webp" alt="" />
           <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
         </div>
