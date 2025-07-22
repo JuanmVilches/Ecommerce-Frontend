@@ -23,10 +23,23 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/adminproducts" element={
-          <AdminGuard><AdminProducts /></AdminGuard>}/>
-        <Route path="/adminusers" element={<UserGuard> <AdminUsers /></UserGuard>} />
-        <Route path='/login' element={<Login/>} />
+        <Route
+          path="/adminproducts"
+          element={
+            <AdminGuard>
+              <AdminProducts />
+            </AdminGuard>
+          }
+        />
+        <Route
+          path="/adminusers"
+          element={
+            <UserGuard>
+              <AdminUsers />
+            </UserGuard>
+          }
+        />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </>

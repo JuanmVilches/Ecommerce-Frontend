@@ -2,9 +2,11 @@ import './ProductCard.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../../hooks/useCart';
 const API = 'https://6861308b8e74864084452e8a.mockapi.io';
 
-export default function ProductCard({ key, product }) {
+export default function ProductCard() {
+  const { addToCart, cart } = useCart();
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
@@ -16,7 +18,6 @@ export default function ProductCard({ key, product }) {
       console.log('Error al obtener los productos', error);
     }
   }
-
   useEffect(() => {
     getProducts();
   }, []);
@@ -27,7 +28,7 @@ export default function ProductCard({ key, product }) {
         <article className="card" key={product.id}>
           <div className="card-header">
             <Link to={`/product/${product.id}`}>
-              <img className="card-image" src={product.image} alt="" />
+              <img className="card-image" src={product.image} alt={product.name} />
             </Link>
           </div>
           <div className="card-body">
@@ -38,7 +39,7 @@ export default function ProductCard({ key, product }) {
             </div>
             <div className="card-price">{product.price}</div>
             <div className="card-buy">
-              <button>Agregar al carrito</button>
+              <button onClick={() => addToCart(product)}>Agregar al carrito</button>
             </div>
           </div>
         </article>

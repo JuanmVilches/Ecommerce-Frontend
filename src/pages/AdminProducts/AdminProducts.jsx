@@ -5,9 +5,10 @@ import { set, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-const API = 'https://6861308b8e74864084452e8a.mockapi.io';
+const API = import.meta.env.VITE_API_URL;
 
 export default function AdminProducts() {
+  const token = localStorage.getItem('token');
   const {
     register,
     handleSubmit,
@@ -25,14 +26,14 @@ export default function AdminProducts() {
   async function getProducts() {
     try {
       const response = await axios.get(`${API}/products`);
-      setProducts(response.data);
+      setProducts(response.data.products);
     } catch (error) {
       console.log('Error al obtener los productos', error);
     }
   }
 
   function editingProduct(id) {
-    const productToEdit = products.find((product) => product.id === id);
+    const productToEdit = products.find((product) => product._id === id);
     console.log('Producto a editar:', productToEdit);
     if (productToEdit) {
       setEditProduct(productToEdit);
@@ -53,7 +54,7 @@ export default function AdminProducts() {
       cancelButtonText: 'Cancelar',
     }).then((response) => {
       if (response.isConfirmed) {
-        axios.delete(`${API}/products/${id}`).then(() => {
+        axios.delete(`${API}/products/${id}`, { headers: { Authorization: token } }).then(() => {
           Swal.fire({
             title: 'Producto eliminado correctamente',
             icon: 'success',
@@ -67,10 +68,25 @@ export default function AdminProducts() {
 
   async function adminSubmit(data) {
     try {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('price', data.price);
+      formData.append('image', data.image[0]);
+      formData.append('description', data.description);
+      formData.append('date', data.date);
+      formData.append('category', data.category);
+
       if (editProduct) {
-        await axios.put(`${API}/products/${editProduct.id}`, data);
+        console.log('Editando producto:', editProduct);
+
+        await axios.put(`${API}/products/${editProduct._id}`, formData, {
+          headers: { Authorization: token },
+        });
       } else {
-        const response = await axios.post(`${API}/products`, data);
+        const response = await axios.post(`${API}/products`, formData, {
+          headers: { Authorization: token },
+        });
+        alert('Producto agregado');
         setProducts((prevProducts) => [...prevProducts, response.data]);
       }
       getProducts();
@@ -98,24 +114,24 @@ export default function AdminProducts() {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product._id}>
                   <td>
-                    <img src={product.image} alt="" />
+                    <img src={`${API}/uploads/products/${product.image}`} alt={product.name} />
                   </td>
                   <td>
-                    <p>{product.title}</p>
+                    <p>{product.name}</p>
                   </td>
                   <td>{product.description}</td>
                   <td>{product.date}</td>
                   <td>{product.price}</td>
                   <td>
-                    <button title="Editar producto" onClick={() => editingProduct(product.id)}>
+                    <button title="Editar producto" onClick={() => editingProduct(product._id)}>
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                     <button
                       className="danger"
                       title="Eliminar producto"
-                      onClick={() => deleteProduct(product.id)}
+                      onClick={() => deleteProduct(product._id)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -132,9 +148,9 @@ export default function AdminProducts() {
           <label htmlFor="title">Producto</label>
           <input
             type="text"
-            id="title"
+            id="name"
             placeholder="Nombre del producto"
-            {...register('title', {
+            {...register('name', {
               required: 'Ingrese el nombre del producto',
               minLength: {
                 value: 5,
@@ -168,11 +184,11 @@ export default function AdminProducts() {
         <div className="input-group">
           <label htmlFor="image">Imagen</label>
           <input
-            type="text"
+            type="file"
             id="image"
             placeholder="URL de la imagen del producto"
             {...register('image', {
-              required: 'Ingrese una imagen del producto',
+              required: !editProduct ? 'Ingrese una imagen del producto' : false,
             })}
           />
         </div>

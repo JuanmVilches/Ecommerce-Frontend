@@ -1,12 +1,20 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import Cart from '../../components/Cart/Cart';
 
 export default function Header() {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem(`user`));
+  const isAdmin = user?.role === 'admin';
 
+  function logout() {
+    const confirmLogout = confirm('Esta por cerrar su sesion');
+    if (!confirmLogout) return;
+    localStorage.clear();
+    navigate('/login');
+  }
   return (
     <>
       <header className="header-container">
@@ -39,25 +47,30 @@ export default function Header() {
               <li className="nav-item">
                 <NavLink to="/about">Acerca de nosotros</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/adminproducts">Admin Products</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/adminusers">Admin Users</NavLink>
-              </li>
+              {isAdmin && (
+                <>
+                  <li className="nav-item">
+                    <NavLink to="/adminproducts">Admin Products</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/adminusers">Admin Users</NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
         <div className="header-right">
           {user ? (
-            <a href="">Logout</a>
+            <button onClick={logout}>Logout</button>
           ) : (
             <li className="nav-item">
               <NavLink to="/login">Iniciar sesión</NavLink>
             </li>
           )}
           <img className="user-logo" src="/src/assets/images/user logo.webp" alt="" />
-          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
+          <Cart />
+          {/* <FontAwesomeIcon icon={faCartShopping} className="cart-icon" /> */}
         </div>
       </header>
     </>

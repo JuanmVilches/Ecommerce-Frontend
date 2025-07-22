@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import './SectionProducts.css';
-import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
 
 export default function SectionProducts() {

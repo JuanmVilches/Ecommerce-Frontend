@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import './AdminUsers.css';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const API = 'https://6861308b8e74864084452e8a.mockapi.io';
+const API = import.meta.env.VITE_API_URL;
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -21,7 +21,7 @@ export default function AdminUsers() {
     axios
       .get(`${API}/users`)
       .then((response) => {
-        setUsers(response.data);
+        setUsers(response.data.users);
       })
       .catch((error) => {
         console.error('Error al obtener los usuarios', error);
@@ -29,12 +29,24 @@ export default function AdminUsers() {
   }, []);
 
   const onSubmit = (data) => {
+    console.log(data);
+    const token = localStorage.getItem('token');
+    console.log(new Date(data.date));
+    console.log(data.date);
+
     if (editUser) {
-      axios.put(`${API}/users/${editUser.id}`, data).then((res) => {
-        setUsers(users.map((user) => (user.id === editUser.id ? res.data : user)));
-        setEditUser(null);
-        reset();
-      });
+      axios
+        .put(`${API}/users/${editUser._id}`, data, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          setUsers(users.map((user) => (user._id === editUser._id ? res.data : user)));
+          setEditUser(null);
+          alert('Usuario editado correctamente');
+          reset();
+        });
     } else {
       axios.post(`${API}/users`, data).then((res) => {
         setUsers([...users, res.data]);
@@ -45,17 +57,26 @@ export default function AdminUsers() {
   };
 
   function editingUser(id) {
-    const user = users.find((u) => u.id === id);
+    const user = users.find((u) => u._id === id);
+    console.log(id, user);
     setEditUser(user);
     reset(user);
   }
 
   function deleteUser(id) {
-    axios.delete(`${API}/users/${id}`).then(() => setUsers(users.filter((user) => user.id !== id)));
-    confirm('Esta seguro que desea eliminar este usuario?') &&
-      alert('Usuario eliminado correctamente').catch((err) =>
-        console.error('Error al eliminar usuario:', err)
-      );
+    const token = localStorage.getItem('token');
+    if (confirm('Esta seguro que desea eliminar este usuario?'))
+      axios
+        .delete(`${API}/users/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then(
+          () => setUsers(users.filter((user) => user._id !== id)),
+          alert('Usuario eliminado correctamente')
+        )
+        .catch((err) => console.error('Error al eliminar usuario:', err));
   }
 
   return (
@@ -75,19 +96,19 @@ export default function AdminUsers() {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id}>
+                <tr key={user._id}>
                   <td>{user.name}</td>
-                  <td>{user.mail}</td>
-                  <td>{user.birthday}</td>
+                  <td>{user.email}</td>
+                  <td>{user.date}</td>
                   <td>{user.country}</td>
                   <td>
-                    <button title="Editar producto" onClick={() => editingUser(user.id)}>
+                    <button title="Editar producto" onClick={() => editingUser(user._id)}>
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                     <button
                       className="danger"
                       title="Eliminar producto"
-                      onClick={() => deleteUser(user.id)}
+                      onClick={() => deleteUser(user._id)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -126,7 +147,7 @@ export default function AdminUsers() {
               type="password"
               {...register('password', {
                 required: 'Campo obligatorio',
-                minLength: { value: 6, message: 'Mínimo 6 caracteres' },
+                minLength: { value: 4, message: 'Mínimo 6 caracteres' },
               })}
             />
             {errors.password && <p>{errors.password.message}</p>}
@@ -148,7 +169,7 @@ export default function AdminUsers() {
             <input
               type="date"
               id="birthdate"
-              {...register('birthdate', { required: 'Campo obligatorio' })}
+              {...register('date', { required: 'Campo obligatorio' })}
             />
             {errors.birthdate && <p>{errors.birthdate.message}</p>}
           </div>
@@ -405,7 +426,7 @@ export default function AdminUsers() {
           </div>
 
           <button type="submit" className="user-btn">
-            Agregar
+            {editUser ? 'Editar usuario' : 'Agregar usuario'}
           </button>
         </form>
       </div>
