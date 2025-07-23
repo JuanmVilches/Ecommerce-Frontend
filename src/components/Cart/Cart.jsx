@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from '../../hooks/useCart';
 import axios from 'axios';
-const API = import.meta.env.VITE_API_URL;
+const API = 'http://localhost:3000';
 
 export default function Cart() {
   const cartCheckboxId = useId();
@@ -31,12 +31,12 @@ export default function Cart() {
     };
 
     try {
-      console.log('Enviando orden:', order);
+      await axios.post(`${API}/orders`, order);
+      const response = await axios.get(`${API}/orders`);
+      console.log(response.data);
 
-      await axios.post(`${API}/orders`, order).then(() => {
-        alert('Orden enviada correctamente');
-        clearCart();
-      });
+      alert('Orden enviada correctamente');
+      clearCart();
     } catch (error) {
       console.log('Error al enviar la orden', error);
       alert('Error al enviar la orden');

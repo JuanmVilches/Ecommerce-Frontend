@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './AdminProducts.css';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-const API = import.meta.env.VITE_API_URL;
+const API = 'http://localhost:3000';
 
 export default function AdminProducts() {
   const token = localStorage.getItem('token');
@@ -26,6 +26,8 @@ export default function AdminProducts() {
   async function getProducts() {
     try {
       const response = await axios.get(`${API}/products`);
+      console.log(response);
+
       setProducts(response.data.products);
     } catch (error) {
       console.log('Error al obtener los productos', error);

@@ -11,9 +11,7 @@ export default function Login() {
   async function login(data) {
     try {
       const response = await axios.post(`${API_URL}/login`, data);
-
-      console.log(response.data);
-      alert('Exito');
+      console.log(response);
 
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
@@ -23,7 +21,6 @@ export default function Login() {
       console.log(error);
       alert('Error al iniciar sesión');
     }
-    console.log(data);
     reset();
   }
 

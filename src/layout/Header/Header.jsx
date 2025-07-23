@@ -7,6 +7,7 @@ import Cart from '../../components/Cart/Cart';
 export default function Header() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem(`user`));
+
   const isAdmin = user?.role === 'admin';
 
   function logout() {
@@ -62,7 +63,14 @@ export default function Header() {
         </div>
         <div className="header-right">
           {user ? (
-            <button onClick={logout}>Logout</button>
+            <div className="user-login">
+              <div className="separator">
+                <span>Bienvenido {user.name}!</span>
+              </div>
+              <button onClick={logout} style={{ cursor: 'pointer', marginRight: '8px' }}>
+                Cerrar sesión
+              </button>
+            </div>
           ) : (
             <li className="nav-item">
               <NavLink to="/login">Iniciar sesión</NavLink>

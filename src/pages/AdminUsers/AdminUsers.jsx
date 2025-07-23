@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import './AdminUsers.css';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const API = import.meta.env.VITE_API_URL;
+const API = 'http://localhost:3000';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);

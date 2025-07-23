@@ -1,106 +1,113 @@
 .father {
-    background: linear-gradient(180deg, rgba(46, 72, 123, 1) 0%, rgba(92, 146, 181, 1) 50%, rgba(147, 218, 178, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(46, 72, 123, 1) 0%,
+    rgba(92, 146, 181, 1) 50%,
+    rgba(147, 218, 178, 1) 100%
+  );
 }
 
 .admin-user-h1 {
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-align: center;
-    margin-top: 32px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 32px;
 }
 
 .table-container {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
 .user-table {
-    margin: 32px auto;
-    background-color: white;
-    border-collapse: collapse;
-    width: 1400px;
-    border: 1px solid black;
+  margin: 32px auto;
+  background-color: white;
+  border-collapse: collapse;
+  width: 1400px;
+  border: 1px solid black;
 
-    thead {
-        th {
-            padding: 16px;
-        }
+  thead {
+    th {
+      padding: 16px;
     }
+  }
 
-    tbody {
-        tr:nth-child(odd) {
-            background-color: #DDD;
-        }
-        td {
-            text-align: center;
-            padding: 16px;
-
-            button {
-                cursor: pointer;
-                padding: 6px 0;
-                width: 28px;
-                background-color: royalblue;
-                color: white;
-                border: none;
-                font-size: 16px;
-                transition: background-color .2s;
-                text-align: center;
-                border-radius: 3px;
-
-                &:hover {
-                    background-color: rgb(23, 76, 236);
-                }
-
-                &.danger {
-                    background-color: crimson;
-                    margin-left: 6px;
-                    transition: background-color .2s;
-
-                    &:hover {
-                        background-color: darkred;
-                    }
-                }
-            }
-        }
+  tbody {
+    tr:nth-child(odd) {
+      background-color: #ddd;
     }
+    td {
+      text-align: center;
+      padding: 16px;
+
+      button {
+        cursor: pointer;
+        padding: 6px 0;
+        width: 28px;
+        background-color: royalblue;
+        color: white;
+        border: none;
+        font-size: 16px;
+        transition: background-color 0.2s;
+        text-align: center;
+        border-radius: 3px;
+
+        &:hover {
+          background-color: rgb(23, 76, 236);
+        }
+
+        &.danger {
+          background-color: crimson;
+          margin-left: 6px;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: darkred;
+          }
+        }
+      }
+    }
+  }
 }
 
-.user-form{
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);    
-    padding: 16px;
-    margin: 10px auto;
-    min-width: 500px;
-    .input-group{
-        width: 100%;
-        margin-bottom: 8px;
-        display: flex;
-        flex-direction: column;
-        
-        label {
-            margin-bottom: 4px;
-        }
-        input, select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-    }
+.user-form {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  margin: 10px auto;
+  max-width: 500px;
+  background-color: white;
+  .input-group {
+    width: 100%;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
 
-    .user-btn{
-            cursor: pointer;
-            padding: 8px;
-            margin-top: 8px;
-        }
-
-    .user-btn[disabled] {
-        cursor: not-allowed;
+    label {
+      margin-bottom: 4px;
     }
+    input,
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .user-btn {
+    cursor: pointer;
+    padding: 8px;
+    margin-top: 8px;
+  }
+
+  .user-btn[disabled] {
+    cursor: not-allowed;
+  }
 }
 
 .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 4px;
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
 }
