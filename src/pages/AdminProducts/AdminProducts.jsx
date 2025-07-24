@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-const API = 'http://localhost:3000';
+const API = import.meta.env.VITE_API_URL;
 
 export default function AdminProducts() {
   const token = localStorage.getItem('token');
@@ -15,6 +15,12 @@ export default function AdminProducts() {
     reset,
     formState: { errors, isValid },
   } = useForm({ mode: 'onChange' });
+
+  function formatearFecha(productDate) {
+    const fecha = new Date(productDate);
+    const formateada = fecha.toLocaleString('es-AR', { dateStyle: 'short' });
+    return formateada;
+  }
 
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState(null);
@@ -26,7 +32,6 @@ export default function AdminProducts() {
   async function getProducts() {
     try {
       const response = await axios.get(`${API}/products`);
-      console.log(response);
 
       setProducts(response.data.products);
     } catch (error) {
@@ -69,6 +74,8 @@ export default function AdminProducts() {
   }
 
   async function adminSubmit(data) {
+    console.log(data);
+
     try {
       const formData = new FormData();
       formData.append('name', data.name);
@@ -88,7 +95,10 @@ export default function AdminProducts() {
         const response = await axios.post(`${API}/products`, formData, {
           headers: { Authorization: token },
         });
-        alert('Producto agregado');
+        Swal.fire({
+          title: 'Producto agregado correctamente!',
+          icon: 'success',
+        });
         setProducts((prevProducts) => [...prevProducts, response.data]);
       }
       getProducts();
@@ -124,7 +134,7 @@ export default function AdminProducts() {
                     <p>{product.name}</p>
                   </td>
                   <td>{product.description}</td>
-                  <td>{product.date}</td>
+                  <td>{formatearFecha(product.createdAt)}</td>
                   <td>{product.price}</td>
                   <td>
                     <button title="Editar producto" onClick={() => editingProduct(product._id)}>

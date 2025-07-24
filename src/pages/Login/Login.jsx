@@ -2,7 +2,8 @@ import { useForm } from 'react-hook-form';
 import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const API_URL = 'http://localhost:3000';
+import Swal from 'sweetalert2';
+const API = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm();
@@ -10,16 +11,22 @@ export default function Login() {
 
   async function login(data) {
     try {
-      const response = await axios.post(`${API_URL}/login`, data);
+      const response = await axios.post(`${API}/login`, data);
       console.log(response);
 
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
-      alert('Inicio de sesión exitoso');
+      Swal.fire({
+        title: 'Iniciu de sesión exitoso!',
+        icon: 'success',
+      });
       navigate('/');
     } catch (error) {
       console.log(error);
-      alert('Error al iniciar sesión');
+      Swal.fire({
+        title: 'Error al iniciar sesión',
+        icon: 'error',
+      });
     }
     reset();
   }

@@ -3,6 +3,7 @@ import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Cart from '../../components/Cart/Cart';
+const API = import.meta.env.VITE_API_URL;
 
 export default function Header() {
   const navigate = useNavigate();
@@ -76,9 +77,21 @@ export default function Header() {
               <NavLink to="/login">Iniciar sesión</NavLink>
             </li>
           )}
-          <img className="user-logo" src="/src/assets/images/user logo.webp" alt="" />
+          {user && user.image ? (
+            <img
+              className="user-logo"
+              src={`${API}/uploads/users/${user.image}`}
+              alt="Foto de usuario"
+            />
+          ) : (
+            <img
+              className="user-logo"
+              src="/src/assets/images/user logo.webp"
+              alt="Imagen por defecto"
+            />
+          )}
+
           <Cart />
-          {/* <FontAwesomeIcon icon={faCartShopping} className="cart-icon" /> */}
         </div>
       </header>
     </>
